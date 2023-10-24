@@ -1,6 +1,12 @@
 package proyecto;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
 
 public class ConsultaRegistroView extends View {
 
@@ -13,12 +19,26 @@ public class ConsultaRegistroView extends View {
 	public ConsultaRegistroView(App appControler) {
 		super(appControler);
 		setLayout(null);
-		
+
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(49, 37, 356, 232);
+		scrollPane.setBounds(48, 28, 505, 374);
 		add(scrollPane);
-		
+
 		table = new JTable();
 		scrollPane.setViewportView(table);
+		TableModel model = new TableModel();
+		table.setModel(model);
+
+		JButton btnRefrescar = new JButton("Refrescar");
+		btnRefrescar.setBounds(477, 422, 113, 23);
+		add(btnRefrescar);
+		btnRefrescar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				model.setRegistros(appControler.consultarRegistros());
+				model.fireTableDataChanged();
+			}
+		});
 	}
 }

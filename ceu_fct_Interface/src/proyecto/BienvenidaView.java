@@ -2,6 +2,7 @@ package proyecto;
 import javax.swing.JLabel;
 
 import proyecto.modelo.Usuario;
+import java.awt.Font;
 
 
 public class BienvenidaView extends View {
@@ -15,8 +16,9 @@ public class BienvenidaView extends View {
 		super(appControler);
 		setLayout(null);
 		
-		JLabel lblCentro = new JLabel("Hola " + appControler.getUsuarioConectado().getNombre());
-		lblCentro.setBounds(181, 141, 72, 14);
+		JLabel lblCentro = new JLabel("Hola " + u.getNombre());
+		lblCentro.setFont(new Font("Tahoma", Font.PLAIN, 37));
+		lblCentro.setBounds(295, 181, 290, 120);
 		add(lblCentro);
 		
 	

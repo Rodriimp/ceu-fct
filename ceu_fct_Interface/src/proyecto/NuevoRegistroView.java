@@ -3,18 +3,22 @@ package proyecto;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.JSlider;
-import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import proyecto.modelo.Fecha;
+import proyecto.modelo.Registro;
 
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.awt.Color;
+import javax.swing.JTextArea;
 
 public class NuevoRegistroView extends View {
 
@@ -22,7 +26,6 @@ public class NuevoRegistroView extends View {
 	 * 
 	 */
 	private static final long serialVersionUID = 1800565692864282734L;
-	private JTextField textField_Tareas;
 
 	public NuevoRegistroView(App appControler) {
 		super(appControler);
@@ -41,9 +44,9 @@ public class NuevoRegistroView extends View {
 		JComboBox<String> comboBox = new JComboBox<String>();
 		comboBox.setBounds(87, 92, 214, 22);
 		add(comboBox);
-		List<Fecha> listafechas = appControler.fechas();
-		for (Fecha fecha : listafechas) {
-			comboBox.addItem(fecha.toStringFecha());
+		List<String> listafechas = appControler.fechas();
+		for (String fecha : listafechas) {
+			comboBox.addItem(fecha);
 		}
 
 		JSlider slider = new JSlider();
@@ -73,20 +76,42 @@ public class NuevoRegistroView extends View {
 		lblTareas.setBounds(127, 245, 107, 14);
 		add(lblTareas);
 
-		JButton btnAceptar = new JButton("Aceptar");
-		btnAceptar.setBounds(486, 398, 89, 23);
-		add(btnAceptar);
-
-		JButton btnCancelar = new JButton("Cancelar");
-		btnCancelar.setBounds(585, 398, 89, 23);
-		add(btnCancelar);
-
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(137, 270, 271, 88);
 		add(scrollPane);
 
-		textField_Tareas = new JTextField();
-		scrollPane.setViewportView(textField_Tareas);
-		textField_Tareas.setColumns(10);
+		JTextArea textArea = new JTextArea();
+		scrollPane.setViewportView(textArea);
+
+		JButton btnAceptar = new JButton("Aceptar");
+		btnAceptar.setBounds(486, 398, 89, 23);
+		add(btnAceptar);
+		btnAceptar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Registro r = new Registro();
+				DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+				LocalDate fecha = LocalDate.parse(comboBox.getSelectedItem().toString(), formato);
+				r.setFecha(java.sql.Date.valueOf(fecha));
+				r.setId_usuario(appControler.getUsuarioConectado().getId_usuario());
+				r.setNum_horas(new BigDecimal(slider.getValue()));
+				r.setDescripcion(textArea.getText());
+
+				appControler.crearNuevoRegistro(r);
+			}
+		});
+
+		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.setBounds(585, 398, 89, 23);
+		add(btnCancelar);
+		btnCancelar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				appControler.irAPantallaBienvenida();
+			}
+		});
+
 	}
 }

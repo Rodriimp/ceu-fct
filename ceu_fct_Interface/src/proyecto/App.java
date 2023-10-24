@@ -3,6 +3,7 @@ package proyecto;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,10 +14,12 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 import proyecto.modelo.Fecha;
+import proyecto.modelo.Registro;
 import proyecto.modelo.Usuario;
 import proyecto.services.AutenticarException;
 import proyecto.services.FctException;
 import proyecto.services.FechasService;
+import proyecto.services.RegistrosService;
 import proyecto.services.UsuariosService;
 
 public class App {
@@ -68,7 +71,8 @@ public class App {
 
 		menuBar = new JMenuBar();
 		menuBar.setBounds(0, 0, 734, 22);
-		loginPantalla.add(menuBar);
+		frame.setJMenuBar(menuBar);
+		;
 
 		JMenu mnApp = new JMenu("App");
 		menuBar.add(mnApp);
@@ -94,6 +98,13 @@ public class App {
 
 		JMenuItem mntmConsultarRegistro = new JMenuItem("Consultar registros");
 		mnRegistros.add(mntmConsultarRegistro);
+		mntmConsultarRegistro.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				irAPantallaConsulta();
+			}
+		});
 
 		irAPantallaLogin();
 
@@ -126,7 +137,7 @@ public class App {
 
 	public void irAPantallaSolicitar() {
 		frame.setContentPane(solicitarAccesoPantalla);
-		menuBar.setVisible(true);
+		menuBar.setVisible(false);
 		frame.revalidate();
 	}
 
@@ -137,35 +148,77 @@ public class App {
 	public Usuario getUsuarioConectado() {
 		return usuarioConectado;
 	}
-	
+
 	public void login(String email, char[] cs) {
 		UsuariosService uService = new UsuariosService();
 		Usuario u = new Usuario();
 		try {
 			String pass = String.valueOf(cs);
-			uService.login(email, pass);
+			u = uService.login(email, pass);
+
 		} catch (FctException | AutenticarException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage());
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			return;
 		}
 		setUsuarioConectado(u);
 
 		irAPantallaBienvenida();
 	}
 
-	
+	public void solicitarAcceso(Usuario u) {
+		UsuariosService uService = new UsuariosService();
+		u.setActivo(true);
 
-	public List<Fecha> fechas() {
-
-		FechasService fService = new FechasService();
-		List<Fecha> fechas = new ArrayList<Fecha>();
 		try {
-			fechas = fService.consultarActuales();
+			uService.altaUsuario(u);
 
 		} catch (FctException e) {
 			e.printStackTrace();
 		}
-		return fechas;
 
+		setUsuarioConectado(u);
+
+		irAPantallaLogin();
+	}
+
+	public void crearNuevoRegistro(Registro r) {
+		RegistrosService rService = new RegistrosService();
+
+		try {
+			rService.crearRegistro(r);
+		} catch (FctException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	public List<String> fechas() {
+
+		FechasService fService = new FechasService();
+		List<Fecha> fechas = new ArrayList<Fecha>();
+		List<String> listaString = new ArrayList<String>();
+		DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		try {
+			fechas = fService.consultarActuales();
+			for (Fecha f : fechas) {
+				listaString.add(formato.format(f.getFecha()));
+			}
+
+		} catch (FctException e) {
+			e.printStackTrace();
+		}
+		return listaString;
+
+	}
+
+	public List<Registro> consultarRegistros() {
+		RegistrosService rS = new RegistrosService();
+		List<Registro> registros = new ArrayList<Registro>();
+		try {
+			registros = rS.consultarRegistrosUsuario(usuarioConectado.getId_usuario());
+		} catch (FctException e) {
+			e.printStackTrace();
+		}
+		return registros;
 	}
 
 }

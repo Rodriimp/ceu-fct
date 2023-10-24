@@ -81,7 +81,8 @@ public class LoginView extends View {
 				int key = e.getKeyCode();
 
 				if (key == KeyEvent.VK_DOWN || key == KeyEvent.VK_ENTER) {
-					e.getComponent().transferFocus();
+					appControler.login(textField_email.getText(), passwordField.getPassword());
+
 				}
 			}
 		});
@@ -100,6 +101,13 @@ public class LoginView extends View {
 		JButton btnAcceso = new JButton("Solicitar acceso");
 		btnAcceso.setBounds(352, 404, 133, 23);
 		add(btnAcceso);
+		btnAcceso.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				appControler.irAPantallaSolicitar();
+			}
+		});
 
 		JButton btnSalir = new JButton("Salir");
 		btnSalir.setBounds(495, 404, 89, 23);
