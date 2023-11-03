@@ -112,6 +112,13 @@ public class LoginView extends View {
 		JButton btnSalir = new JButton("Salir");
 		btnSalir.setBounds(495, 404, 89, 23);
 		add(btnSalir);
+		btnSalir.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
 
 	}
 }

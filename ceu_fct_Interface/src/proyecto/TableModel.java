@@ -1,5 +1,6 @@
 package proyecto;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,9 +45,11 @@ public class TableModel extends AbstractTableModel {
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Registro r = registros.get(rowIndex);
 		String nombreCol = columnas.get(columnIndex);
+		DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		String fechaCadena = formato.format(r.getFecha().toLocalDate());
 
 		if (nombreCol.equals("Fecha")) {
-			return r.getFecha();
+			return fechaCadena;
 		}
 		if (nombreCol.equals("Horas")) {
 			return r.getNum_horas();

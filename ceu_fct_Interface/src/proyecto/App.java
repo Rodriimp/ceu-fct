@@ -65,8 +65,6 @@ public class App {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		loginPantalla = new LoginView(this);
-		newRegistroPantalla = new NuevoRegistroView(this);
-		consultaRegistroPantalla = new ConsultaRegistroView(this);
 		solicitarAccesoPantalla = new SolicitarAccesoView(this);
 
 		menuBar = new JMenuBar();
@@ -79,9 +77,25 @@ public class App {
 
 		JMenuItem mntmCerrarSesion = new JMenuItem("Cerrar sesión");
 		mnApp.add(mntmCerrarSesion);
+		mntmCerrarSesion.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(null, "Cerrando Sesión...", "System", JOptionPane.INFORMATION_MESSAGE);
+				irAPantallaLogin();
+				
+			}
+		});
 
 		JMenuItem mntmSalir = new JMenuItem("Salir");
 		mnApp.add(mntmSalir);
+		mntmSalir.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
 
 		JMenu mnRegistros = new JMenu("Registros");
 		menuBar.add(mnRegistros);
@@ -117,8 +131,9 @@ public class App {
 	}
 
 	public void irAPantallaNuevoRegistro() {
+		menuBar.setVisible(true);
+		newRegistroPantalla = new NuevoRegistroView(this);
 		frame.setContentPane(newRegistroPantalla);
-		menuBar.setVisible(false);
 		frame.revalidate();
 	}
 
@@ -130,8 +145,9 @@ public class App {
 	}
 
 	public void irAPantallaConsulta() {
-		frame.setContentPane(consultaRegistroPantalla);
 		menuBar.setVisible(true);
+		consultaRegistroPantalla = new ConsultaRegistroView(this);
+		frame.setContentPane(consultaRegistroPantalla);
 		frame.revalidate();
 	}
 
@@ -186,6 +202,8 @@ public class App {
 
 		try {
 			rService.crearRegistro(r);
+			JOptionPane.showMessageDialog(null, "¡Registro creado con éxito!", "System",
+					JOptionPane.INFORMATION_MESSAGE);
 		} catch (FctException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		}
@@ -211,6 +229,7 @@ public class App {
 	}
 
 	public List<Registro> consultarRegistros() {
+		
 		RegistrosService rS = new RegistrosService();
 		List<Registro> registros = new ArrayList<Registro>();
 		try {

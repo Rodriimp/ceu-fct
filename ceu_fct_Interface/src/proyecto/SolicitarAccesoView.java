@@ -35,61 +35,62 @@ public class SolicitarAccesoView extends View {
 
 		JLabel lblEmail = new JLabel("Email:");
 		lblEmail.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblEmail.setBounds(148, 63, 46, 14);
+		lblEmail.setBounds(286, 104, 46, 14);
 		add(lblEmail);
 
 		JLabel lblContraseña = new JLabel("Contraseña:");
 		lblContraseña.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblContraseña.setBounds(148, 113, 79, 14);
+		lblContraseña.setBounds(286, 154, 79, 14);
 		add(lblContraseña);
 
 		passwordField = new JPasswordField();
-		passwordField.setBounds(148, 133, 166, 20);
+		passwordField.setBounds(286, 174, 166, 20);
 		add(passwordField);
 
 		JLabel lblRepetirContra = new JLabel("Repetir Contraseña:");
 		lblRepetirContra.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblRepetirContra.setBounds(148, 164, 117, 14);
+		lblRepetirContra.setBounds(286, 205, 117, 14);
 		add(lblRepetirContra);
 
 		passwordField_repe = new JPasswordField();
-		passwordField_repe.setBounds(148, 182, 166, 20);
+		passwordField_repe.setBounds(286, 223, 166, 20);
 		add(passwordField_repe);
 
 		JLabel lblNombre = new JLabel("Nombre:");
 		lblNombre.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblNombre.setBounds(148, 213, 68, 14);
+		lblNombre.setBounds(286, 254, 68, 14);
 		add(lblNombre);
 
 		JLabel lblApellidos = new JLabel("Apellidos: ");
 		lblApellidos.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblApellidos.setBounds(148, 265, 79, 14);
+		lblApellidos.setBounds(286, 306, 79, 14);
 		add(lblApellidos);
 
 		JLabel lblCiclo = new JLabel("Ciclo formativo: ");
 		lblCiclo.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblCiclo.setBounds(148, 316, 104, 14);
+		lblCiclo.setBounds(286, 357, 104, 14);
 		add(lblCiclo);
 
 		JComboBox<String> comboBox = new JComboBox<String>();
-		comboBox.setBounds(148, 343, 166, 22);
+		comboBox.setBounds(286, 384, 166, 22);
 		add(comboBox);
 		comboBox.addItem("DAM");
 		comboBox.addItem("DAW");
 		comboBox.addItem("ASIR");
+		comboBox.setSelectedItem(null);
 
 		textField_email = new JTextField();
-		textField_email.setBounds(148, 82, 166, 20);
+		textField_email.setBounds(286, 123, 166, 20);
 		add(textField_email);
 		textField_email.setColumns(10);
 
 		textField_nombre = new JTextField();
-		textField_nombre.setBounds(148, 234, 166, 20);
+		textField_nombre.setBounds(286, 275, 166, 20);
 		add(textField_nombre);
 		textField_nombre.setColumns(10);
 
 		textField_apellidos = new JTextField();
-		textField_apellidos.setBounds(148, 285, 166, 20);
+		textField_apellidos.setBounds(286, 326, 166, 20);
 		add(textField_apellidos);
 		textField_apellidos.setColumns(10);
 
@@ -124,7 +125,7 @@ public class SolicitarAccesoView extends View {
 
 		JButton btnAceptar = new JButton("Aceptar");
 		btnAceptar.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnAceptar.setBounds(323, 429, 89, 23);
+		btnAceptar.setBounds(495, 496, 89, 23);
 		add(btnAceptar);
 		btnAceptar.addActionListener(new ActionListener() {
 
@@ -149,6 +150,11 @@ public class SolicitarAccesoView extends View {
 							JOptionPane.INFORMATION_MESSAGE);
 					appControler.solicitarAcceso(u);
 
+				}
+
+				else if (!password.equals(password2)) {
+					JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden", "Error",
+							JOptionPane.ERROR_MESSAGE);
 				} else {
 					JOptionPane.showMessageDialog(null, "Los campos deben estar completos", "Error",
 							JOptionPane.ERROR_MESSAGE);
@@ -159,7 +165,7 @@ public class SolicitarAccesoView extends View {
 
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnCancelar.setBounds(422, 429, 89, 23);
+		btnCancelar.setBounds(594, 496, 89, 23);
 		add(btnCancelar);
 		btnCancelar.addActionListener(new ActionListener() {
 
